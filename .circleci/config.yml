@@ -74,9 +74,9 @@ workflows:
   build:
     jobs:
       - run_tests
-      - sca_scan
+      - sca_scan:
           requires:
             - run_tests
-      - sast_dast_scan_docker_image
+      - sast_dast_scan_docker_image:
           requires:
             - sca_scan
