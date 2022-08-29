@@ -36,7 +36,6 @@ jobs:
     machine:
       image: ubuntu-2004:202101-01
     resource_class: medium
-    working_directory: /tmp
     steps:
       - checkout
       - aws-ecr/build-and-push-image:
@@ -61,6 +60,7 @@ jobs:
           name: ZAP baseline test of application
           command: |
             (
+            cd /tmp
             docker pull owasp/zap2docker-weekly && \
             docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-baseline.py \
                 -u https://raw.githubusercontent.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/master/zap-baseline.conf \
@@ -75,4 +75,8 @@ workflows:
     jobs:
       - run_tests
       - sca_scan
+          requires:
+            - run_tests
       - sast_dast_scan_docker_image
+          requires:
+            - sca_scan
