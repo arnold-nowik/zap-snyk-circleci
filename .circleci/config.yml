@@ -67,7 +67,7 @@ jobs:
                 -u https://raw.githubusercontent.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/master/zap-baseline.conf \
                 -t http://172.17.0.2:5000/ \
                 -r report.html -J report.json || \
-                echo &? > /tmp/result
+                echo $? > /tmp/result
             )
       - store_artifacts:
           path: /tmp/zap-report
